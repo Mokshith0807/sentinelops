@@ -24,6 +24,8 @@ services:
         value: 10000
       - key: SPRING_PROFILES_ACTIVE
         value: render
+      - key: CORS_ALLOWED_ORIGINS
+        value: http://localhost:*,https://sentinelops-ui.onrender.com
       - key: ADMIN_EMAIL
         sync: false
       - key: ADMIN_PASSWORD
