@@ -52,7 +52,7 @@ function Incidents() {
         if (severity && (i.severity || "").toUpperCase() !== severity) return false;
         if (status && (i.status || "").toUpperCase() !== status) return false;
         return true;
-    };
+    });
 
     return (
         <MainLayout title="Incident Queue" subtitle={`${filtered.length} signals in scope`}>

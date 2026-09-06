@@ -15,7 +15,26 @@ sentinelops/
 - Node 20+, JDK 21+, MySQL 8 (database `sentinelops`)
 - A Google Gemini API key
 
-## Run backend
+## Run with Docker (recommended for deploy)
+
+```bash
+# set secrets (powershell: $env:DB_PASSWORD="..."; bash: export DB_PASSWORD=...)
+docker compose up --build -d
+```
+
+| Service  | URL                            |
+|----------|--------------------------------|
+| Frontend | http://localhost:8080          |
+| Backend  | http://localhost:8484/api      |
+| Swagger  | http://localhost:8484/swagger-ui.html |
+
+Flyway auto-creates the schema on first boot. MySQL data persists in the
+`mysql-data` volume. Stop local dev servers first if ports 3306/8484 clash.
+
+Env knobs: `DB_PASSWORD` (required-ish), `JWT_SECRET`, `GEMINI_API_KEY`,
+`VITE_API_URL` (defaults to `http://localhost:8484/api`).
+
+## Run backend (local dev)
 
 ```bash
 cd backend
