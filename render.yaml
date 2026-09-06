@@ -1,0 +1,53 @@
+services:
+  # ---- MySQL (internal, free-compatible; data resets on redeploy without a disk) ----
+  - type: pserv
+    name: sentinelops-mysql
+    runtime: image
+    image:
+      url: mysql:8.0
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
+      - key: MYSQL_DATABASE
+        value: sentinelops
+
+  # ---- Spring Boot API (Docker) ----
+  - type: web
+    name: sentinelops-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /v3/api-docs
+    envVars:
+      - key: SERVER_PORT
+        value: 10000
+      - key: DB_HOST
+        fromService:
+          type: pserv
+          name: sentinelops-mysql
+          property: host
+      - key: DB_PORT
+        value: 3306
+      - key: DB_NAME
+        value: sentinelops
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+
+  # ---- React UI (static site) ----
+  - type: web
+    name: sentinelops-ui
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_HOST
+        fromService:
+          type: web
+          name: sentinelops-api
+          property: host
