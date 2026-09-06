@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Builds
+dist/
+target/
+*.class
+*.jar
+*.war
+
+# Env / secrets
+.env
+.env.local
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.settings/
+.project
+.classpath
+.factorypath
+.DS_Store
+Thumbs.db
